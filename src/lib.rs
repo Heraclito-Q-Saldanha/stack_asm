@@ -27,12 +27,12 @@ trait InstructionCode {
 
 pub fn compile(target: &Targets, code: &[Instruction]) -> Vec<u8> {
     let label_map = generate_label_map(target, code);
-    let mut bytecode: Vec<u8> = code
+    let mut bytecode = Vec::<u8>::new();
+    let code: Vec<u8> = code
         .into_iter()
         .map(|i| target.get(&label_map, i))
         .flat_map(|i| i.into_vec())
         .collect();
-
     let len = code.len() as u64;
     let header = elf::Elf64_Ehdr {
         e_ident: [
@@ -79,6 +79,7 @@ pub fn compile(target: &Targets, code: &[Instruction]) -> Vec<u8> {
     };
     bytecode.extend(header.to_bytes());
     bytecode.extend(phdr.to_bytes());
+    bytecode.extend(code);
     bytecode
 }
 

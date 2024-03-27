@@ -7,9 +7,17 @@ pub enum Targets {
 }
 
 impl InstructionCode for Targets {
-    fn get(&self, instruction: &Instruction) -> Box<[u8]> {
+    fn get(&self, label_map: &LabelMap, instruction: &Instruction) -> Box<[u8]> {
         match self {
-            Self::X86_64 => x86_64::instruction_code(instruction),
+            Self::X86_64 => x86_64::instruction_code(label_map, instruction),
+        }
+    }
+    fn len(&self, instruction: &Instruction) -> usize {
+        match instruction {
+            Instruction::Exit => 10,
+            Instruction::LabelDeclaration(_) => 0,
+            Instruction::Push(_) => 11,
+            Instruction::Raw(data) => data.len(),
         }
     }
 }

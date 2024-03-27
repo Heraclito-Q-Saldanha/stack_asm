@@ -1,6 +1,10 @@
 mod elf;
 mod targets;
 pub use targets::*;
+mod error;
+pub use error::*;
+
+pub type LabelMap = std::collections::HashMap<String, u64>;
 
 #[derive(Debug, Clone)]
 pub enum Instruction<'a> {
@@ -17,19 +21,18 @@ pub enum Value<'a> {
 }
 
 trait InstructionCode {
-    fn get(&self, instruction: &Instruction) -> Box<[u8]>;
-    #[inline(always)]
-    fn len(&self, instruction: &Instruction) -> usize {
-        self.get(instruction).len()
-    }
+    fn get(&self, label_map: &LabelMap, instruction: &Instruction) -> Box<[u8]>;
+    fn len(&self, instruction: &Instruction) -> usize;
 }
 
 pub fn compile(target: &Targets, code: &[Instruction]) -> Vec<u8> {
+    let label_map = generate_label_map(target, code);
     let mut bytecode: Vec<u8> = code
         .into_iter()
-        .map(|i| target.get(i))
+        .map(|i| target.get(&label_map, i))
         .flat_map(|i| i.into_vec())
         .collect();
+
     let len = code.len() as u64;
     let header = elf::Elf64_Ehdr {
         e_ident: [
@@ -79,15 +82,14 @@ pub fn compile(target: &Targets, code: &[Instruction]) -> Vec<u8> {
     bytecode
 }
 
-fn label_resolver(target: &Targets, code: &[Instruction], label: &str) -> Option<usize> {
+fn generate_label_map(target: &Targets, code: &[Instruction]) -> LabelMap {
+    let mut label_map = LabelMap::new();
     let mut counter = 0;
     for i in code {
         if let Instruction::LabelDeclaration(l) = i {
-            if *l == label {
-                return Some(counter);
-            }
+            label_map.insert((*l).to_string(), counter);
         }
-        counter += target.len(i);
+        counter += target.len(i) as u64;
     }
-    None
+    label_map
 }

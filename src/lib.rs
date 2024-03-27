@@ -2,12 +2,18 @@ mod elf;
 mod targets;
 pub use targets::*;
 
-pub type LabelReference = str;
-
+#[derive(Debug, Clone)]
 pub enum Instruction<'a> {
-    Push(&'a LabelReference),
+    Push(Value<'a>),
+    LabelDeclaration(&'a str),
+    Raw(&'a [u8]),
     Exit,
-    Label(&'a LabelReference, &'a [u8]),
+}
+
+#[derive(Debug, Clone)]
+pub enum Value<'a> {
+    LabelReference(&'a str),
+    Inline(u64),
 }
 
 trait InstructionCode {
@@ -73,14 +79,10 @@ pub fn compile(target: &Targets, code: &[Instruction]) -> Vec<u8> {
     bytecode
 }
 
-fn get_label_reference(
-    target: &Targets,
-    code: &[Instruction],
-    label: &LabelReference,
-) -> Option<usize> {
+fn label_resolver(target: &Targets, code: &[Instruction], label: &str) -> Option<usize> {
     let mut counter = 0;
     for i in code {
-        if let Instruction::Label(l, _) = i {
+        if let Instruction::LabelDeclaration(l) = i {
             if *l == label {
                 return Some(counter);
             }

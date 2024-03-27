@@ -11,6 +11,7 @@ pub enum Instruction<'a> {
     Push(Value<'a>),
     LabelDeclaration(&'a str),
     Raw(&'a [u8]),
+    Add,
     Exit,
 }
 

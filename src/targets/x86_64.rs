@@ -33,6 +33,13 @@ pub(crate) fn instruction_code(label_map: &LabelMap, instruction: &Instruction) 
             // syscall;
             Box::new([0x5F, 0x48, 0xC7, 0xC0, 0x3C, 0x00, 0x00, 0x00, 0x0F, 0x05])
         }
+        Instruction::Add => {
+            // pop rax;
+            // pop rbx;
+            // add rax, rbx;
+            // push rbx;
+            Box::new([0x48, 0x05, 0x7F, 0x96, 0x98, 0x00])
+        },
         Instruction::Raw(raw) => (*raw).into()
     }
 }

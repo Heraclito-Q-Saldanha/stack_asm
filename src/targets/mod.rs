@@ -20,6 +20,7 @@ impl InstructionCode for Targets {
             Instruction::Raw(data) => data.len(),
             Instruction::Add => 6,
             Instruction::Jmp => 3,
+            Instruction::StdOut => 0,
         }
     }
 }

@@ -14,6 +14,7 @@ pub enum Instruction<'a> {
     Add,
     Exit,
     Jmp,
+    StdOut,
 }
 
 #[derive(Debug, Clone)]

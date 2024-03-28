@@ -46,5 +46,15 @@ pub(crate) fn instruction_code(label_map: &LabelMap, instruction: &Instruction) 
             // jmp rax;
             Box::new([0x58, 0xFF, 0xE0])
         }
+        Instruction::StdOut => {
+            // mov rax, 1;
+            // mov rdi, 1;
+            
+            // pop rdx;
+            // pop rsi;
+            
+            // syscall;
+            Box::new([0x48, 0xC7, 0xC0, 0x01, 0x00, 0x00, 0x00, 0x48, 0xC7, 0xC7, 0x01, 0x00, 0x00, 0x00, 0x5A, 0x5E, 0x0F, 0x05])
+        }
     }
 }

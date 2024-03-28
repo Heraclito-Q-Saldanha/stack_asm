@@ -10,7 +10,7 @@ fn main() {
         Instruction::Push(Value::Inline(0)),
         Instruction::Exit,
         Instruction::LabelDeclaration("STRING"),
-        Instruction::Raw("hello world".as_bytes()),
+        Instruction::Raw("hello world\n".as_bytes()),
     ];
     let program = compile(&Targets::X86_64, &code);
     fs::write("./out", program).unwrap();

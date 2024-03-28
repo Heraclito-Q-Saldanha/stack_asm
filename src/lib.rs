@@ -13,6 +13,7 @@ pub enum Instruction<'a> {
     Raw(&'a [u8]),
     Add,
     Exit,
+    Jmp,
 }
 
 #[derive(Debug, Clone)]

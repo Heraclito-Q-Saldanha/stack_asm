@@ -16,6 +16,6 @@ fn main() {
         Instruction::LabelDeclaration("STRING"),
         Instruction::Raw("hello world\n".as_bytes()),
     ];
-    let program = compile(&Targets::X86_64, &code);
+    let program = compile(&Targets::X86_64, &code).unwrap();
     fs::write("./out", program).unwrap();
 }

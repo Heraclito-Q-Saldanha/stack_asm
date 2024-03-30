@@ -8,6 +8,6 @@ fn main() {
         Instruction::Push(Value::LabelReference("LOOP")),
         Instruction::Jmp
     ];
-    let program = compile(&Targets::X86_64, &code);
+    let program = compile(&Targets::X86_64, &code).unwrap();
     fs::write("./out", program).unwrap();
 }

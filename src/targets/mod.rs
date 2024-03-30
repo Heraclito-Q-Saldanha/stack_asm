@@ -7,7 +7,7 @@ pub enum Targets {
 }
 
 impl InstructionCode for Targets {
-    fn get(&self, label_map: &LabelMap, instruction: &Instruction) -> Box<[u8]> {
+    fn get(&self, label_map: &LabelMap, instruction: &Instruction) -> Result<Box<[u8]>, Error> {
         match self {
             Self::X86_64 => x86_64::instruction_code(label_map, instruction),
         }

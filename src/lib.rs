@@ -24,18 +24,23 @@ pub enum Value<'a> {
 }
 
 trait InstructionCode {
-    fn get(&self, label_map: &LabelMap, instruction: &Instruction) -> Box<[u8]>;
+    fn get(
+        &self,
+        label_map: &LabelMap,
+        instruction: &Instruction,
+    ) -> Result<Box<[u8]>, error::Error>;
     fn len(&self, instruction: &Instruction) -> usize;
 }
 
-pub fn compile(target: &Targets, code: &[Instruction]) -> Vec<u8> {
+pub fn compile(target: &Targets, code: &[Instruction]) -> Result<Vec<u8>, error::Error> {
     let label_map = generate_label_map(target, code);
     let mut bytecode = Vec::<u8>::new();
-    let code: Vec<u8> = code
+    let code: Result<Vec<Box<[u8]>>, error::Error> = code
         .into_iter()
         .map(|i| target.get(&label_map, i))
-        .flat_map(|i| i.into_vec())
         .collect();
+    let code = code?;
+    let code: Vec<u8> = code.into_iter().flat_map(|i| i.into_vec()).collect();
     let len = code.len() as u64;
     let header = elf::Elf64_Ehdr {
         e_ident: [
@@ -83,7 +88,7 @@ pub fn compile(target: &Targets, code: &[Instruction]) -> Vec<u8> {
     bytecode.extend(header.to_bytes());
     bytecode.extend(phdr.to_bytes());
     bytecode.extend(code);
-    bytecode
+    Ok(bytecode)
 }
 
 fn generate_label_map(target: &Targets, code: &[Instruction]) -> LabelMap {

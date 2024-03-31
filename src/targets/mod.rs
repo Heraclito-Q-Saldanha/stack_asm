@@ -22,6 +22,7 @@ impl InstructionCode for Targets {
             Instruction::Jmp => 3,
             Instruction::StdOut => 18,
             Instruction::Sub => 6,
+            Instruction::Mul => 7,
         }
     }
 }

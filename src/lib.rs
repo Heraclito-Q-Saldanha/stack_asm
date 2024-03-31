@@ -13,8 +13,9 @@ pub enum Instruction<'a> {
     Raw(&'a [u8]),
     Add,
     Sub,
-    Exit,
+    Mul,
     Jmp,
+    Exit,
     StdOut,
 }
 

@@ -40,8 +40,8 @@ pub(crate) fn instruction_code(label_map: &LabelMap, instruction: &Instruction) 
             // pop rax;
             // pop rbx;
             // add rax, rbx;
-            // push rbx;
-            Ok(Box::new([0x48, 0x05, 0x7F, 0x96, 0x98, 0x00]))
+            // push rax;
+            Ok(Box::new([0x58, 0x5B, 0x48, 0x01, 0xD8, 0x50]))
         },
         Instruction::Sub => {
             // pop rax;

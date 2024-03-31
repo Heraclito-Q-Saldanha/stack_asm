@@ -16,7 +16,10 @@ pub(crate) fn instruction_code(label_map: &LabelMap, instruction: &Instruction) 
                 ]))
             }
             Value::LabelReference(label) => {
-                let data = label_map.get(*label).unwrap() + 0x400078;
+                let Some(data) = label_map.get(*label) else {
+                    return Err(Error::LabelNotFound);
+                };
+                let data = data + 0x400078;
                 let bytes = data.to_le_bytes();
                 // movabs rax, <data>;
                 // push rax;

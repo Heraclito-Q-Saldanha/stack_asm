@@ -12,6 +12,7 @@ pub enum Instruction<'a> {
     LabelDeclaration(&'a str),
     Raw(&'a [u8]),
     Add,
+    Sub,
     Exit,
     Jmp,
     StdOut,

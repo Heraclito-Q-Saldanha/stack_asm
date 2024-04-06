@@ -10,6 +10,8 @@ pub type LabelMap = std::collections::HashMap<String, u64>;
 pub enum Instruction<'a> {
     Push(Value<'a>),
     Pop,
+    Dup,
+    Swap,
     LabelDeclaration(&'a str),
     Raw(&'a [u8]),
     Add,

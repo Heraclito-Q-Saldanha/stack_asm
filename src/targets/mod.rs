@@ -18,6 +18,8 @@ impl InstructionCode for Targets {
             Instruction::LabelDeclaration(_) => 0,
             Instruction::Push(_) => 11,
             Instruction::Pop => 1,
+            Instruction::Dup => 3,
+            Instruction::Swap => 4,
             Instruction::Raw(data) => data.len(),
             Instruction::Add => 6,
             Instruction::Jmp => 3,

@@ -30,6 +30,19 @@ pub(crate) fn instruction_code(label_map: &LabelMap, instruction: &Instruction) 
                 ]))
             }
         },
+        Instruction::Dup => {
+            // pop rax;
+            // push rax;
+            // push rax;
+            Ok(Box::new([0x58, 0x50, 0x50]))
+        }
+        Instruction::Swap => {
+            // pop rax;
+            // pop rbx;
+            // push rax;
+            // push rbx;            
+            Ok(Box::new([0x58, 0x5B, 0x50, 0x53]))
+        }
         Instruction::Pop => {
             // pop rax;
             Ok(Box::new([0x58]))

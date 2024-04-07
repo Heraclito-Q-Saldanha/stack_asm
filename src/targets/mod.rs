@@ -29,6 +29,7 @@ impl InstructionCode for Targets {
             Instruction::Div => 6,
             Instruction::Exit => 10,
             Instruction::StdOut => 18,
+            Instruction::MMap => 19,
         }
     }
 }

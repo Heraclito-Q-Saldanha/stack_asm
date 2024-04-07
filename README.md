@@ -24,6 +24,7 @@ Jmp
 //syscalls
 Exit
 StdOut
+MMap
 
 //etc
 LabelDeclaration

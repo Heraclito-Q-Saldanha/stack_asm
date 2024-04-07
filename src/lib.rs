@@ -23,6 +23,7 @@ pub enum Instruction<'a> {
     Jmp,
     Exit,
     StdOut,
+    MMap,
 }
 
 #[derive(Debug, Clone)]

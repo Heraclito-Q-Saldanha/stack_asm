@@ -20,6 +20,8 @@ impl InstructionCode for Targets {
             Instruction::Pop => 1,
             Instruction::Dup => 3,
             Instruction::Swap => 4,
+            Instruction::Store => 5,
+            Instruction::Load => 5,
             Instruction::Jmp => 3,
             Instruction::Add => 6,
             Instruction::Sub => 6,

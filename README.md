@@ -14,6 +14,10 @@ Sub
 Mul
 Div
 
+//memory
+Store
+Load
+
 //control flow
 Jmp
 

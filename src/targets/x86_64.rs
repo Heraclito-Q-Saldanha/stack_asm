@@ -74,6 +74,13 @@ pub(crate) fn instruction_code(label_map: &LabelMap, instruction: &Instruction) 
             // push rax;
             Ok(Box::new([0x58, 0x5B, 0x48, 0x0F, 0xAF, 0xC3, 0x50]))
         }
+        Instruction::Div => {
+            // pop rbx;
+            // pop rax;
+            // div rbx;
+            // push rax;
+            Ok(Box::new([0x5B, 0x58, 0x48, 0xF7, 0xF3, 0x50]))
+        }
         Instruction::Raw(raw) => Ok((*raw).into()),
         Instruction::Jmp => {
             // pop rax;

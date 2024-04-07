@@ -17,6 +17,7 @@ pub enum Instruction<'a> {
     Add,
     Sub,
     Mul,
+    Div,
     Jmp,
     Exit,
     StdOut,

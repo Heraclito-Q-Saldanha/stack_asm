@@ -12,6 +12,7 @@ Swap
 Add
 Sub
 Mul
+Div
 
 //control flow
 Jmp

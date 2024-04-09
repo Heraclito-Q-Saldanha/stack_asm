@@ -4,16 +4,16 @@ use std::fs;
 fn main() {
     #[rustfmt::skip]
     let code = [
-        Instruction::LabelDeclaration("MAIN"),
-            Instruction::Push(Value::LabelReference("RETURN")),
+        Instruction::LabelDeclaration("start"),
+            Instruction::Push(Value::LabelReference("return")),
             Instruction::Push(Value::Inline(10)),
             Instruction::Push(Value::Inline(6)),
-            Instruction::Push(Value::LabelReference("ADD_FN")),
+            Instruction::Push(Value::LabelReference("add")),
             Instruction::Jmp,
-            Instruction::LabelDeclaration("RETURN"),
+            Instruction::LabelDeclaration("return"),
             Instruction::Exit,
-
-        Instruction::LabelDeclaration("ADD_FN"),
+        
+        Instruction::LabelDeclaration("add"),
             Instruction::Add,
             Instruction::Swap,
             Instruction::Jmp

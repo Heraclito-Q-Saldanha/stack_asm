@@ -44,10 +44,14 @@ trait InstructionCode {
 pub fn compile(target: &Targets, code: &[Instruction]) -> Result<Vec<u8>, error::Error> {
     let label_map = generate_label_map(target, code)?;
     let mut bytecode = Vec::<u8>::new();
+
     let code = code.into_iter().try_fold(Vec::new(), |mut acc, i| {
         acc.extend(target.get(&label_map, i)?.into_vec());
         Ok(acc)
     })?;
+    let Some(e_entry) = label_map.get("start") else {
+        return Err(error::Error::LabelNotFound("start".to_string()));
+    };
 
     let len = code.len() as u64;
     let header = elf::Elf64_Ehdr {
@@ -71,7 +75,7 @@ pub fn compile(target: &Targets, code: &[Instruction]) -> Result<Vec<u8>, error:
         ],
         e_type: elf::ET_EXEC,
         e_machine: elf::EM_X86_64,
-        e_entry: 0x400078,
+        e_entry: *e_entry + 0x400078,
         e_phoff: 64,
         e_shoff: 0,
         e_flags: 0,

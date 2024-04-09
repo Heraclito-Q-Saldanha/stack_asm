@@ -1,4 +1,5 @@
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub enum Error {
-    LabelNotFound,
+    DuplicatedLabel(String),
+    LabelNotFound(String),
 }

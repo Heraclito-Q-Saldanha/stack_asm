@@ -18,7 +18,7 @@ pub(crate) fn instruction_code(label_map: &LabelMap, instruction: &Instruction) 
             }
             Value::LabelReference(label) => {
                 let Some(data) = label_map.get(*label) else {
-                    return Err(Error::LabelNotFound);
+                    return Err(Error::LabelNotFound(label.to_string()));
                 };
                 let data = data + 0x400078;
                 let bytes = data.to_le_bytes();

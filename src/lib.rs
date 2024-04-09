@@ -42,7 +42,7 @@ trait InstructionCode {
 }
 
 pub fn compile(target: &Targets, code: &[Instruction]) -> Result<Vec<u8>, error::Error> {
-    let label_map = generate_label_map(target, code);
+    let label_map = generate_label_map(target, code)?;
     let mut bytecode = Vec::<u8>::new();
     let code: Result<Vec<Box<[u8]>>, error::Error> = code
         .into_iter()
@@ -100,14 +100,17 @@ pub fn compile(target: &Targets, code: &[Instruction]) -> Result<Vec<u8>, error:
     Ok(bytecode)
 }
 
-fn generate_label_map(target: &Targets, code: &[Instruction]) -> LabelMap {
+fn generate_label_map(target: &Targets, code: &[Instruction]) -> Result<LabelMap, error::Error> {
     let mut label_map = LabelMap::new();
     let mut counter = 0;
     for i in code {
         if let Instruction::LabelDeclaration(l) = i {
+            if label_map.contains_key(*l) {
+                return Err(error::Error::DuplicatedLabel(l.to_string()));
+            }
             label_map.insert((*l).to_string(), counter);
         }
         counter += target.len(i) as u64;
     }
-    label_map
+    Ok(label_map)
 }

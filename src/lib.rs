@@ -21,6 +21,7 @@ pub enum Instruction<'a> {
     Mul,
     Div,
     Jmp,
+    Call,
     Exit,
     StdOut,
     MMap,

@@ -23,6 +23,7 @@ impl InstructionCode for Targets {
             Instruction::Store => 5,
             Instruction::Load => 5,
             Instruction::Jmp => 3,
+            Instruction::Call => 3,
             Instruction::Add => 6,
             Instruction::Sub => 6,
             Instruction::Mul => 7,

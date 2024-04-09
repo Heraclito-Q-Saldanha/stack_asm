@@ -93,6 +93,11 @@ pub(crate) fn instruction_code(label_map: &LabelMap, instruction: &Instruction) 
             // jmp rax;
             Ok(Box::new([0x58, 0xFF, 0xE0]))
         }
+        Instruction::Call => {
+            // pop rax;
+            // call rax;
+            Ok(Box::new([0x58, 0xFF, 0xD0]))
+        }
         Instruction::Exit => {
             // pop rdi;
             // mov rax, 60;

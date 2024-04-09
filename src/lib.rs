@@ -44,12 +44,11 @@ trait InstructionCode {
 pub fn compile(target: &Targets, code: &[Instruction]) -> Result<Vec<u8>, error::Error> {
     let label_map = generate_label_map(target, code)?;
     let mut bytecode = Vec::<u8>::new();
-    let code: Result<Vec<Box<[u8]>>, error::Error> = code
-        .into_iter()
-        .map(|i| target.get(&label_map, i))
-        .collect();
-    let code = code?;
-    let code: Vec<u8> = code.into_iter().flat_map(|i| i.into_vec()).collect();
+    let code = code.into_iter().try_fold(Vec::new(), |mut acc, i| {
+        acc.extend(target.get(&label_map, i)?.into_vec());
+        Ok(acc)
+    })?;
+
     let len = code.len() as u64;
     let header = elf::Elf64_Ehdr {
         e_ident: [

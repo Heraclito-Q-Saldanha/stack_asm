@@ -5,21 +5,23 @@ fn main() {
     #[rustfmt::skip]
     let code = [
         Instruction::LabelDeclaration("start"),
-            Instruction::Push(Value::Inline(10)),
-            Instruction::Push(Value::Inline(6)),
-            Instruction::Push(Value::LabelReference("add")),
+            Instruction::Push(Value::LabelReference("hello")),
             Instruction::Call,
-            Instruction::Exit,
+            Instruction::Push(Value::LabelReference("exit")),
+            Instruction::Call,
 
-        Instruction::LabelDeclaration("add"),
-            Instruction::Push(Value::LabelReference("return_ptr")),
-            Instruction::Store,
-            Instruction::Add,
-            Instruction::Push(Value::LabelReference("return_ptr")),
-            Instruction::Load,
+        Instruction::LabelDeclaration("hello"),
+            Instruction::Push(Value::LabelReference("string")),
+            Instruction::Push(Value::Inline(10)), // str len
+            Instruction::StdOut,
             Instruction::Jmp,
-        Instruction::LabelDeclaration("return_ptr"),
-        Instruction::Raw(&[0, 0, 0, 0, 0, 0, 0, 0])
+
+        Instruction::LabelDeclaration("exit"),
+            Instruction::Push(Value::Inline(0)),
+            Instruction::Exit,
+        
+        Instruction::LabelDeclaration("string"),
+        Instruction::Raw(b"hello :))\n")
     ];
     let program = compile(&Targets::X86_64, &code).unwrap();
     fs::write("./out", program).unwrap();

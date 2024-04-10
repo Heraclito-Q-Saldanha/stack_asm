@@ -20,6 +20,7 @@ Load
 
 //control flow
 Jmp
+Call
 
 //syscalls
 Exit

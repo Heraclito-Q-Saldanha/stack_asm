@@ -1,5 +1,7 @@
 # stack_asm
 
+This is a dependency-free x86_86 assembler library made for fun (not use for anything serious)
+
 ## instruction set
 ```
 //stack operations
